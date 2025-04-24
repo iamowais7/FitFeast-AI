@@ -1,18 +1,44 @@
 import { View, Text, Image, Pressable, Alert } from 'react-native'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Input from '../../components/Input'
 import Button from '../../components/shared/Button'
 import { Link } from 'expo-router'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { auth } from '../../services/FirebaseConfig'
+import { useConvex } from 'convex/react'
+import { UserContext } from '../../context/UserContext'
+import { api } from '../../convex/_generated/api'
 export default function SignIn() {
 
    const [email,setEmail]=useState()
    const [password,setPassword]=useState()
+   const convex = useConvex()
+
+   const {user,setUser}=useContext(UserContext)
 
   const onSignIn =()=>{
     if(!email || !password){
       Alert.alert("Missing Fields!","Enter All Field Values")
       return
     }
+
+    signInWithEmailAndPassword(auth, email, password)
+  .then(async(userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    
+    const userData = await convex.query(api.Users.GetUser,{
+      email:email
+    })
+    console.log(userData)
+    setUser(userData)
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    Alert.alert("Error Msg",errorMessage)
+  });
+
   }
 
   return (

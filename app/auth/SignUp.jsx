@@ -8,6 +8,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { useMutation } from 'convex/react'
 import {api} from '../../convex/_generated/api'
 import { UserContext } from '../../context/UserContext'
+// import { CreateNewUser } from '../../convex/helper'
 
 export default function SignUp() {
 
@@ -17,36 +18,36 @@ export default function SignUp() {
 
   const {user,setUser}=useContext(UserContext)
 
-  const createNewUser=useMutation(api.Users.createNewUser)
+  const createNewUser=useMutation(api.Users.CreateNewUser)
 
   const onSignUp =()=>{
       if(!name || !email || !password){
         Alert.alert("Missing Fields!","Enter All Field Values")
       }
+      
+      createUserWithEmailAndPassword(auth, email, password)
+      .then(async(userCredential) => {
+        // Signed up 
+        const user = userCredential.user;
+        console.log(user)
+        if(user){
+          const result = await createNewUser({
+            name:name,
+            email:email
+          })
+          console.log(result)
+           setUser(result)
+           //Navigate to Home Screen
+        }
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        Alert.alert("Signup Failed", errorMessage);
+      });
   }
 
-  createUserWithEmailAndPassword(auth, email, password)
-  .then(async(userCredential) => {
-    // Signed up 
-    const user = userCredential.user;
-    console.log(user)
-    if(user){
-      const result = await createNewUser({
-        name:name,
-        email:email
-      })
-
-      console.log(result)
-      setUser(result)
-    }
-
-    // ...
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    // ..
-  });
+ 
 
 
   return (
