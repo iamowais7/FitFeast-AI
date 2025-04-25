@@ -9,7 +9,9 @@ import { useMutation } from 'convex/react';
 import {api} from './../../convex/_generated/api'
 import {UserContext} from './../../context/UserContext'
 import { useRouter } from 'expo-router';
-
+// import  CalculateCaloriesAI  from '../../services/AiModel';
+import Prompt from '../../shared/Prompt'
+import { CalculateCaloriesAI } from '../../services/AiModel';
 
 export default function Preferance() {
 
@@ -28,7 +30,7 @@ export default function Preferance() {
     if(!weight || !height || !gender){
       Alert.alert("Fill All Details","Enter all details to continue")
     }
-
+    
     const data={
       uid:user?._id,
       weight:weight,
@@ -36,16 +38,33 @@ export default function Preferance() {
       goal:goal,
       gender:gender
     }
-    const result = await updateUserPref({
-      ...data
+
+    //calculate calories using AI
+    const PROMPT = JSON.stringify(data)+Prompt.CALORIES_PROMPT
+    console.log(PROMPT)
+    try {
+      const AIResult = await CalculateCaloriesAI(PROMPT);
+      console.log(AIResult.choices[0].message.content);
+      const AiResp =  JSON.parse(AIResult.choices[0].message.content)
+       const result = await updateUserPref({
+      ...data,
+      ...AiResp
     })
     setUser(prev=>({
       ...prev,
-      ...data
+      ...data,
+      
     }))
 
     router.replace('/(tabs)/Home')
+    } catch (error) {
+      console.error("Error getting AI response", error);
+      Alert.alert("Error", "AI response could not be understood.");
+    }
+    
+   
   }
+
   return (
     <View style={{
         padding:20,
@@ -189,5 +208,16 @@ const styles = StyleSheet.create({
       },
       goalSubText:{
         Colors:Colors.GRAY
+      },
+      goalContainer:{
+        display:'flex',
+        flexDirection:'row',
+        alignItems:"center",
+        gap:20,
+        padding:15,
+        borderWidth:1,
+        borderColor:Colors.GRAY,
+        borderRadius:15,
+        marginTop:15
       }
 })
