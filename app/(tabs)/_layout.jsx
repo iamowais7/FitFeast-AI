@@ -8,7 +8,8 @@ import Colors from './../../shared/Colors'
 export default function TabLayout() {
   return (
     <Tabs screenOptions={{
-        tabBarActiveTintColor:Colors.PRIMARY
+        tabBarActiveTintColor:Colors.PRIMARY,
+        headerShown:false
     }}>
         <Tabs.Screen name='Home' options={{
             tabBarIcon:({color,size} )=> <HugeiconsIcon

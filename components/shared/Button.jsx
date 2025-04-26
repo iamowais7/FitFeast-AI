@@ -1,22 +1,25 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native'
 import React from 'react'
 import  Colors  from '@/shared/Colors'
 
-export default function Button({title,onPress}) {
+export default function Button({title,onPress,icon,loading=false}) {
   return (
     <TouchableOpacity 
     onPress={onPress}
+    disabled={loading}
     style={{
-        padding:20,
+        padding:13,
         backgroundColor:Colors.PRIMARY,
         width:'100%',
         borderRadius:10
     }}>
-      <Text style={{
-        fontSize:20,
-        color:Colors.WHITE,
-        textAlign:'center'
-      }}>{title}</Text>
+      {loading?<ActivityIndicator color={Colors.WHITE}/>:
+        <Text style={{
+          fontSize:18,
+          color:Colors.WHITE,
+          textAlign:'center'
+        }}>{icon}{title}</Text>}
+      
     </TouchableOpacity>
   )
 }

@@ -45,7 +45,9 @@ export default function Preferance() {
     try {
       const AIResult = await CalculateCaloriesAI(PROMPT);
       console.log(AIResult.choices[0].message.content);
-      const AiResp =  JSON.parse(AIResult.choices[0].message.content)
+      const AiResp = AIResult.choices[0].message.content
+      const JSONContent = JSON.parse(AiResp.replace('```json','').replace('```',''))
+      console.log(JSONContent)
        const result = await updateUserPref({
       ...data,
       ...AiResp
