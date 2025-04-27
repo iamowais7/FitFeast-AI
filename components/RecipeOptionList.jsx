@@ -44,7 +44,9 @@ export default function RecipeOptionList({recipeOption}) {
          //redirect to recipe details screen
         router.push({
           pathname:'/recipe-detail',
-          recipeId:saveRecipeResult
+          params: {
+            recipeId: saveRecipeResult
+          }
         })
 
          setLoading(false)
