@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, FlatList } from 'react-native'
 import React, { useContext, useEffect } from 'react'
 import {UserContext} from '../../context/UserContext'
 import { useRouter } from 'expo-router'
@@ -9,6 +9,7 @@ import TodaysMealPlan from '../../components/TodaysMealPlan'
 
 export default function Home() {
   const {user} = useContext(UserContext)
+  
   const router = useRouter()
 
   useEffect(()=>{
@@ -17,6 +18,10 @@ export default function Home() {
         }
   },[user])
   return (
+    <FlatList
+    data={[]}
+    renderItem={()=>null}
+    ListHeaderComponent={
     <View style={{
       padding:20
     }}>
@@ -24,6 +29,7 @@ export default function Home() {
       <TodayProgress />
       <GenerateRecipeCard />
       <TodaysMealPlan />
-    </View>
+    </View>}
+    ></FlatList>
   )
 }
