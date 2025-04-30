@@ -8,6 +8,7 @@ import Button from './shared/Button'
 import { useMutation } from 'convex/react'
 import { api } from '../convex/_generated/api'
 import {UserContext} from './../context/UserContext'
+import DateSelectionCard from './DateSelectionCard'
 
 
 export default function AddToMealActionSheet({recipeDetail,hideActionSheet}) {
@@ -33,24 +34,10 @@ export default function AddToMealActionSheet({recipeDetail,hideActionSheet}) {
         },
     ]
 
-    useEffect(()=>{
-        GenerateDates();
-    }, [])
-    const GenerateDates=()=>{
-        const result=[]
-
-        for(let i =0;i<4;i++){
-            {
-                const nextDate=moment().add(i,'days').format('DD/MM/YYYY')
-                result.push(nextDate)
-            }
-            console.log(result)
-            setDateList(result)
-        }
-    }
+   
 
     const AddToMealPlan=async()=>{
-        if(!selectedDate && !selectedMeal){
+        if(!selectedDate || !selectedMeal){
             Alert.alert("Error","Please Select All Details")
         }
 
@@ -75,44 +62,7 @@ export default function AddToMealActionSheet({recipeDetail,hideActionSheet}) {
         textAlign:'center'
       }}>Add To Meal</Text>
 
-    <Text style={{
-        fontSize:18,
-        fontWeight:'bold',
-        marginTop:15
-    }}>Select Date</Text>
-
-      <FlatList 
-       data={dateList}
-       numColumns={4}
-       renderItem={({item,index})=>(
-            <TouchableOpacity 
-            onPress={()=>setSelectedDate(item)}
-            style={{
-                flex:1,
-                display:'flex',
-                alignItems:'center',
-                padding:7,
-                borderWidth:1,
-                borderRadius:10,
-                margin:5,
-                backgroundColor:selectedDate==item ? Colors.SECONDARY : Colors.WHITE,
-                borderColor:selectedDate==item ? Colors.PRIMARY : Colors.GRAY
-            }}>
-                <Text style={{
-                    fontSize:18,
-                    fontWeight:'500'
-                }}>{moment(item,'DD/MM/YYYY').format('ddd')}</Text>
-                <Text style={{
-                    fontSize:20,
-                    fontWeight:'bold'
-                }}>{moment(item,'DD/MM/YYYY').format('DD')}</Text>
-                <Text style={{
-                    fontSize:16
-                }}>{moment(item,'DD/MM/YYYY').format('MMM')}</Text>
-
-
-            </TouchableOpacity>
-       )}/>
+   <DateSelectionCard setSelectedDate={setSelectedDate}/>
 
 <Text style={{
         fontSize:18,

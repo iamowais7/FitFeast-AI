@@ -15,7 +15,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.iamowais.FitFeastAI"
     },
     "web": {
       "bundler": "metro",
@@ -36,6 +37,18 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "01111b1d-5f42-4683-bc65-4b8ea5a2e558"
+      },
+      "EXPO_PUBLIC_CONVEX_URL": "process.env.EXPO_PUBLIC_CONVEX_URL",
+      "EXPO_PUBLIC_FIREBASE_API_KEY": "process.env.EXPO_PUBLIC_FIREBASE_API_KEY",
+      "EXPO_PUBLIC_OPENROUTER_API_KEY": "process.env.EXPO_PUBLIC_OPENROUTER_API_KEY",
+      "EXPO_PUBLIC_AIGURU_LAB_API_KEY": "process.env.EXPO_PUBLIC_AIGURU_LAB_API_KEY"
     }
   }
 }

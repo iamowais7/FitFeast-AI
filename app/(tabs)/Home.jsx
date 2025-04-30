@@ -6,9 +6,11 @@ import HomeHeader from '../../components/HomeHeader'
 import TodayProgress from '../../components/TodayProgress'
 import GenerateRecipeCard from '../../components/GenerateRecipeCard'
 import TodaysMealPlan from '../../components/TodaysMealPlan'
+import { RefreshDataContext } from '../../context/RefreshDataContext'
 
 export default function Home() {
   const {user} = useContext(UserContext)
+     const{refreshData,setRefreshData} = useContext(RefreshDataContext)
   
   const router = useRouter()
 
@@ -16,7 +18,7 @@ export default function Home() {
         if(!user?.weight){
           router.replace('/preferance')
         }
-  },[user])
+  },[user,refreshData])
   return (
     <FlatList
     data={[]}
